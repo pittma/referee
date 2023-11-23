@@ -1,0 +1,25 @@
+cabal-version:      2.4
+name:               referee
+version:            0.1.0.0
+author:             dan pittman
+maintainer:         dan@dpitt.me
+extra-source-files:
+    readme.md
+
+library
+    exposed-modules:  Referee
+    build-depends:
+        base ^>=4.17.2.0,
+        parselet,
+        text
+    hs-source-dirs:   src
+    default-language: Haskell2010
+
+executable referee
+    main-is:          Main.hs
+    build-depends:
+        base ^>=4.17.2.0,
+        referee
+
+    hs-source-dirs:   bin
+    default-language: Haskell2010
