@@ -13,27 +13,12 @@ newtype Statement =
   Statement Text
   deriving (Show)
 
-data Connective
-  = And
-  | Or
-  deriving (Show)
-
 data Spec
   = Var Text
-  | Con Connective Spec Spec
+  | And Spec Spec
+  | Or Spec Spec
+  | Not Spec
   deriving (Show)
-
-data Function = Function
-  { function_name :: Text
-  , function_spec :: Spec
-  , function_args :: [Arg]
-  , function_body :: Statement
-  } deriving (Show)
-
-data Ast = Ast
-  { ast_fileName :: Text
-  , ast_functions :: [Function]
-  } deriving (Show)
 
 spec :: Parser Spec
 spec =
@@ -41,15 +26,20 @@ spec =
      one '('
      s <- spec
      one ')'
-     whitespace
-     c <- parseConnective
-     whitespace
-     fmap (Con c s) spec)
+     (do
+        whitespace
+        c <- parseConnective
+        whitespace
+        fmap (c s) spec)
+       <|> pure s)
+    <|> (one '!' >> Not <$> spec)
     <|> parseSpec
 
-parseConnective :: Parser Connective
+parseConnective :: Parser (Spec -> Spec -> Spec)
 parseConnective = fmap f (phrase "||" <|> phrase "&&")
   where
+    -- the parser above only eats if we get `||` or `&&`, so the
+    -- partiality below is "okay".
     f t
       | t == "&&" = And
       | t == "||" = Or
@@ -57,9 +47,13 @@ parseConnective = fmap f (phrase "||" <|> phrase "&&")
 parseSpec :: Parser Spec
 parseSpec = assocr var cv
   where
-    var = do 
+    var = do
       whitespace
-      v <- word
+      v <-
+        (do
+           one '!'
+           Not . Var <$> word)
+          <|> (Var <$> word)
       whitespace
-      pure (Var v)
-    cv = Con <$> parseConnective
+      pure v
+    cv = parseConnective
