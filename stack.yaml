@@ -5,4 +5,4 @@ packages:
 
 extra-deps:
 - github: pittma/parselet
-  commit: 7b4776fd884fc479c871c737af3fd532b9b7921e
+  commit: 78e2019979f3b3fae586679fc7d735a5731c198e

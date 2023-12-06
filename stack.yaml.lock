@@ -7,14 +7,14 @@ packages:
 - completed:
     name: parselet
     pantry-tree:
-      sha256: af1e8554521dfb0f8cfc0d25df28709f72bb8804d35e4e689690d65ac7091ab4
+      sha256: 09366fd2f9b211b147144213c65e955084120cfabb46e4f226191855e84562a5
       size: 215
-    sha256: 2240950217b005f96adafca18532140d6f1dcb200b655ec1acdc9d22f2cdf012
-    size: 1767
-    url: https://github.com/pittma/parselet/archive/7b4776fd884fc479c871c737af3fd532b9b7921e.tar.gz
+    sha256: 9ee3ef7494c47bea8e8242e37352ad0ef6daa1352b5c3aa644401ea79d75ac4b
+    size: 1823
+    url: https://github.com/pittma/parselet/archive/78e2019979f3b3fae586679fc7d735a5731c198e.tar.gz
     version: 0.1.0.0
   original:
-    url: https://github.com/pittma/parselet/archive/7b4776fd884fc479c871c737af3fd532b9b7921e.tar.gz
+    url: https://github.com/pittma/parselet/archive/78e2019979f3b3fae586679fc7d735a5731c198e.tar.gz
 snapshots:
 - completed:
     sha256: 7d4b649cf368f9076d8aa049aa44efe58950971d105892734e9957b2a26a2186

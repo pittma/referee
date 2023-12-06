@@ -2,7 +2,7 @@
 module Referee.Spec.Parser (Spec(..), parse) where
 
 import Data.Text
-import Text.Parselet
+import Text.Parselet hiding (parser)
 
 data Spec
   = Var Text
@@ -11,17 +11,20 @@ data Spec
   | Not Spec
   deriving (Show, Eq)
 
-parse :: Parser Spec
-parse =
+parse :: Text -> Maybe Spec
+parse t = fst <$> runParser t parser
+
+parser :: Parser Spec
+parser =
   (do
      one '!'
      one '('
-     s <- parse
+     s <- parser
      one ')'
      con Not s <|> pure (Not s))
     <|> (do
            one '('
-           s <- parse
+           s <- parser
            one ')'
            con id s <|> pure s)
     <|> (do
@@ -29,14 +32,14 @@ parse =
            whitespace
            c <- parseConnective
            whitespace
-           c v <$> parse)
+           c v <$> parser)
     <|> var
   where
     con f s = do
       whitespace
       c <- parseConnective
       whitespace
-      fmap (c (f s)) parse
+      fmap (c (f s)) parser
     var = (one '!' >> Not . Var <$> word) <|> (Var <$> word)
 
 parseConnective :: Parser (Spec -> Spec -> Spec)
