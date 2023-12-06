@@ -7,7 +7,11 @@ extra-source-files:
     readme.md
 
 library
-    exposed-modules:  Referee
+    exposed-modules:
+        Referee,
+        Referee.Spec,
+        Referee.Spec.Dnf,
+        Referee.Spec.Parser
     build-depends:
         base ^>=4.17.2.0,
         parselet,
