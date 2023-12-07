@@ -25,7 +25,7 @@ dnf' (Var v) = [[T v]]
 dnf' (Not (Var v)) = [[N v]]
 dnf' (Not s) = dnf' $ dist s
   where
-    -- The best options for negated subexprs is to distribute the
+    -- The best option for negated subexprs is to distribute the
     -- negation first, and then convert to dnf.
     dist :: Spec -> Spec
     dist (Not var@(Var _)) = var

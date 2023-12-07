@@ -14,6 +14,7 @@ library
         Referee.Spec.Parser
     build-depends:
         base ^>=4.17.2.0,
+        containers,
         parselet,
         text
     hs-source-dirs:   src

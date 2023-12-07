@@ -1,11 +1,39 @@
 module Referee.Spec (
   module Referee.Spec.Parser,
-  dnf
+  dnf,
+  solve
 ) where
 
-import Data.Text
-import Referee.Spec.Dnf (Dnf, dnf')
+import qualified Data.Map as M
+import Data.Text hiding (foldr)
+import Referee.Spec.Dnf (Dnf, Term(..), dnf')
 import Referee.Spec.Parser (parse)
 
 dnf :: Text -> Maybe Dnf
 dnf t = dnf' <$> parse t
+
+data Eval
+  = Contra
+  | State (M.Map Text Bool)
+  deriving (Show)
+
+solve :: Text -> Maybe Bool
+solve t = do
+  d <- dnf t
+  pure (foldr g True d)
+  where
+    g :: [Term] -> Bool -> Bool
+    g _ False = False
+    g ts _ = case foldr f (State M.empty) ts of
+      State _ -> True
+      Contra -> False
+    f :: Term -> Eval -> Eval
+    f _ Contra = Contra
+    f (T a) (State m) = case M.lookup a m of
+      Just True -> State m
+      Just False -> Contra
+      Nothing -> State (M.insert a True m)
+    f (N a) (State m) = case M.lookup a m of
+      Just False -> State m
+      Just True -> Contra
+      Nothing -> State (M.insert a False m)
