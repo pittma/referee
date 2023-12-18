@@ -21,12 +21,12 @@ parser =
      one '('
      s <- parser
      one ')'
-     con Not s <|> pure (Not s))
+     con Not s <|> (eof >> pure (Not s)))
     <|> (do
            one '('
            s <- parser
            one ')'
-           con id s <|> pure s)
+           con id s <|> (eof >> pure s))
     <|> (do
            v <- var
            whitespace
