@@ -12,6 +12,9 @@ data Term
   | N Text
   deriving (Show)
 
+dnf :: Text -> Maybe Dnf
+dnf t = dnf' <$> parse t
+
 dnf' :: Spec -> Dnf
 dnf' (Or a b) = or (dnf' a) (dnf' b)
   where

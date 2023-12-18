@@ -1,16 +1,14 @@
 module Referee.Spec (
   module Referee.Spec.Parser,
+  -- NB: Defined in Referee.Spec.Dnf
   dnf,
   solve
 ) where
 
 import qualified Data.Map as M
 import Data.Text hiding (map, foldr, any)
-import Referee.Spec.Dnf (Dnf, Term(..), dnf')
+import Referee.Spec.Dnf
 import Referee.Spec.Parser (parse)
-
-dnf :: Text -> Maybe Dnf
-dnf t = dnf' <$> parse t
 
 data Eval
   = Contra
