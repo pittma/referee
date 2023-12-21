@@ -10,6 +10,7 @@ library
     exposed-modules:
         Referee,
         Referee.Spec,
+        Referee.Lang,
         Referee.Spec.Dnf,
         Referee.Spec.Parser
     build-depends:
