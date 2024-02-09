@@ -1,16 +1,9 @@
 module Referee.Dnf where
 
-import Prelude hiding (and, not, or)
-import Data.Text hiding (map, concatMap)
+import Data.Text (Text)
 
 import Referee.Parser
-
-type Dnf = [[Term]]
-
-data Term
-  = T Text
-  | N Text
-  deriving (Show)
+import Referee.Types
 
 dnf :: Text -> Maybe Dnf
 dnf t = dnf' <$> parseSpec t

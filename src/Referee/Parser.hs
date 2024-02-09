@@ -4,29 +4,10 @@ module Referee.Parser where
 import Prelude hiding (fail)
 
 import Data.Text
-import Text.Parselet hiding (parser)
+import Text.Parselet
 import Text.Read
 
-data BuiltinOp
-  = Add
-  | Sub deriving (Show)
-
-
-data Expr
-  = App Text [Expr]
-  | Var Text
-  | SVal Text
-  | IVal Integer
-  | Builtin BuiltinOp [Expr]
-  | Def Text [Text] Expr
-  deriving (Show)
-
-data Spec
-  = SVar Text
-  | And Spec Spec
-  | Or Spec Spec
-  | Not Spec
-  deriving (Show, Eq)
+import Referee.Types
 
 parseExpr :: Text -> Maybe [Expr]
 parseExpr t =

@@ -1,18 +1,17 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Referee.Lang where
 
-import Prelude hiding (fail, repeat)
-
-import Data.Text (Text, pack, unpack)
 import qualified Data.Map as M
+import Data.Text (Text)
 
 import Referee.Parser
+import Referee.Types
+
+type Env = M.Map Text Expr
   
 evalBuiltin :: BuiltinOp -> [Expr] -> Expr
 evalBuiltin Add [IVal l, IVal r] = IVal (l + r)
 evalBuiltin Sub [IVal l, IVal r] = IVal (l - r)
-
-type Env = M.Map Text Expr
 
 eval :: Env -> Expr -> Maybe Expr
 eval env (Builtin op exprs) = do

@@ -3,14 +3,11 @@ module Referee.Spec (
 ) where
 
 import qualified Data.Map as M
-import Data.Text hiding (map, foldr, any)
+import Data.Text (Text)
+
 import Referee.Dnf
 import Referee.Parser (parseSpec)
-
-data Eval
-  = Contra
-  | State (M.Map Text Bool)
-  deriving (Show)
+import Referee.Types
 
 solve :: Text -> Maybe Bool
 solve t = do
