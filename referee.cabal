@@ -8,14 +8,15 @@ extra-source-files:
 
 library
     exposed-modules:
-        Referee,
-        Referee.Spec,
         Referee.Lang,
-        Referee.Spec.Dnf,
-        Referee.Spec.Parser
+        Referee.Spec
+    other-modules:
+        Referee.Parser,
+        Referee.Types
     build-depends:
         base ^>=4.17.2.0,
         containers,
+        mtl,
         parselet,
         text
     hs-source-dirs:   src

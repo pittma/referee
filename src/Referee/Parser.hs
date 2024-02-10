@@ -1,24 +1,32 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Referee.Parser where
 
-import Prelude hiding (fail)
+import Prelude hiding (fail, take)
 
+import Control.Monad.Except (throwError)
 import Data.Text
 import Text.Parselet
 import Text.Read
 
 import Referee.Types
 
-parseExpr :: Text -> Maybe [Expr]
+refMParse :: (Monad m) => Text -> Parser a -> RefM m a
+refMParse t p =
+  let res = runParser t p
+   in case res of
+        Left s -> throwError (Parse (unpack $ take 10 s))
+        Right (s, _) -> pure s
+
+parseExpr :: (Monad m) => Text -> RefM m [Expr]
 parseExpr t =
-  fst
-    <$> runParser
-          t
-          (do
-             defs <- repeatUntil (whitespace >> defParser)
-             whitespace
-             eof
-             pure defs)
+  refMParse
+    t
+    (do
+       defs <- repeatUntil (whitespace >> defParser)
+       whitespace
+       eof
+       pure defs)
+    
 
 defParser :: Parser Expr
 defParser = do
@@ -63,8 +71,8 @@ parseBody =
     <|> (Var <$> word)
 
 
-parseSpec :: Text -> Maybe Spec
-parseSpec t = fst <$> runParser t specParser
+parseSpec :: (Monad m) => Text -> RefM m Spec
+parseSpec t = refMParse t specParser
 
 specParser :: Parser Spec
 specParser =
